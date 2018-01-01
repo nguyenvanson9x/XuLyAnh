@@ -1,5 +1,36 @@
-﻿Build started 12/29/2017 10:41:37 AM.
+﻿Build started 1/1/2018 12:00:04 PM.
+     1>Project "D:\XLA\XuLyAnh\XuLyAnh\XuLyAnh.vcxproj" on node 2 (Build target(s)).
+     1>ClCompile:
+         D:\Microsoft Visual Studio 14.0\VC\bin\x86_amd64\CL.exe /c /ID:\opencv\build\x64\vc14\..\..\include /AI"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5.2\\" /AI"C:\Program Files (x86)\Windows Kits\8.1\References\CommonConfiguration\Neutral" /AI"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5.2\Facades\\" /Zi /clr /nologo /W3 /WX- /Od /D _DEBUG /D _UNICODE /D UNICODE /EHa /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"x64\Debug\\" /Fd"x64\Debug\vc140.pdb" /TP /FU"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5.2\mscorlib.dll" /FU"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5.2\System.Data.dll" /FU"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5.2\System.dll" /FU"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5.2\System.Drawing.dll" /FU"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5.2\System.Windows.Forms.dll" /FU"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5.2\System.Xml.dll" /errorReport:prompt /clr:nostdlib VideoProcess.cpp
+         VideoProcess.cpp
+     1>d:\opencv\build\include\opencv2\core\cvstd.hpp(575): warning C4793: 'cv::String::String': function compiled as native:
+         	Found an intrinsic not supported in managed code
+     1>d:\opencv\build\include\opencv2\core\cuda.inl.hpp(105): warning C4793: 'cv::cuda::GpuMat::GpuMat': function compiled as native:
+         	Found an intrinsic not supported in managed code
+     1>d:\opencv\build\include\opencv2\core\cuda.inl.hpp(395): warning C4793: 'cv::cuda::HostMem::HostMem': function compiled as native:
+         	Found an intrinsic not supported in managed code
+     1>d:\opencv\build\include\opencv2\core\mat.inl.hpp(482): warning C4793: 'cv::Mat::Mat': function compiled as native:
+         	Found an intrinsic not supported in managed code
+     1>d:\opencv\build\include\opencv2\core\mat.inl.hpp(803): warning C4793: 'cv::Mat::release': function compiled as native:
+         	Found an intrinsic not supported in managed code
+     1>d:\opencv\build\include\opencv2\core\mat.inl.hpp(2083): warning C4793: 'cv::SparseMat::addref': function compiled as native:
+         	Found an intrinsic not supported in managed code
+     1>d:\opencv\build\include\opencv2\core\mat.inl.hpp(3683): warning C4793: 'cv::UMat::addref': function compiled as native:
+         	Found an intrinsic not supported in managed code
+     1>d:\opencv\build\include\opencv2\core\ptr.inl.hpp(67): warning C4793: 'cv::detail::PtrOwner::incRef': function compiled as native:
+         	Found an intrinsic not supported in managed code
+     1>d:\opencv\build\include\opencv2\core\ptr.inl.hpp(72): warning C4793: 'cv::detail::PtrOwner::decRef': function compiled as native:
+         	Found an intrinsic not supported in managed code
+     1>d:\opencv\build\include\opencv2\core\cvstd.hpp(656): warning C4793: 'cv::String::operator=': function compiled as native:
+         	Found an intrinsic not supported in managed code
+       Link:
+         D:\Microsoft Visual Studio 14.0\VC\bin\x86_amd64\link.exe /ERRORREPORT:PROMPT /OUT:"D:\XLA\XuLyAnh\x64\Debug\XuLyAnh.exe" /INCREMENTAL /NOLOGO /LIBPATH:D:\opencv\build\x64\vc14\lib opencv_world330.lib opencv_world330d.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /ASSEMBLYRESOURCE:x64\Debug\XuLyAnh.MyForm.resources /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /Debug /PDB:"D:\XLA\XuLyAnh\x64\Debug\XuLyAnh.pdb" /ASSEMBLYDEBUG /TLBID:1 /DYNAMICBASE /FIXED:NO /NXCOMPAT /MACHINE:X64 x64\Debug\MyForm.obj
+         x64\Debug\Source.obj
+         x64\Debug\VideoProcess.obj
+         "x64\Debug\.NETFramework,Version=v4.5.2.AssemblyAttributes.obj"
+         XuLyAnh.vcxproj -> D:\XLA\XuLyAnh\x64\Debug\XuLyAnh.exe
+     1>Done Building Project "D:\XLA\XuLyAnh\XuLyAnh\XuLyAnh.vcxproj" (Build target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:00.02
+Time Elapsed 00:00:06.26

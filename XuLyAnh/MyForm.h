@@ -65,13 +65,13 @@ namespace XuLyAnh {
 		{
 			this->pnPlayer = (gcnew System::Windows::Forms::Panel());
 			this->pnControl = (gcnew System::Windows::Forms::Panel());
-			this->btnSelectFile = (gcnew System::Windows::Forms::Button());
-			this->lbPath = (gcnew System::Windows::Forms::Label());
-			this->lbPhuongPhap = (gcnew System::Windows::Forms::Label());
-			this->cbPhuongPhap = (gcnew System::Windows::Forms::ComboBox());
-			this->lbSoLanChay = (gcnew System::Windows::Forms::Label());
-			this->txtSoLanChay = (gcnew System::Windows::Forms::NumericUpDown());
 			this->btnThucHien = (gcnew System::Windows::Forms::Button());
+			this->txtSoLanChay = (gcnew System::Windows::Forms::NumericUpDown());
+			this->lbSoLanChay = (gcnew System::Windows::Forms::Label());
+			this->cbPhuongPhap = (gcnew System::Windows::Forms::ComboBox());
+			this->lbPhuongPhap = (gcnew System::Windows::Forms::Label());
+			this->lbPath = (gcnew System::Windows::Forms::Label());
+			this->btnSelectFile = (gcnew System::Windows::Forms::Button());
 			this->pnControl->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->txtSoLanChay))->BeginInit();
 			this->SuspendLayout();
@@ -108,40 +108,39 @@ namespace XuLyAnh {
 			this->pnControl->Size = System::Drawing::Size(294, 477);
 			this->pnControl->TabIndex = 1;
 			// 
-			// btnSelectFile
+			// btnThucHien
 			// 
-			this->btnSelectFile->Cursor = System::Windows::Forms::Cursors::Hand;
-			this->btnSelectFile->Font = (gcnew System::Drawing::Font(L"Segoe UI", 14.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+			this->btnThucHien->Font = (gcnew System::Drawing::Font(L"Segoe UI", 14.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->btnSelectFile->Location = System::Drawing::Point(16, 59);
-			this->btnSelectFile->Name = L"btnSelectFile";
-			this->btnSelectFile->Size = System::Drawing::Size(121, 40);
-			this->btnSelectFile->TabIndex = 0;
-			this->btnSelectFile->Text = L"Select video";
-			this->btnSelectFile->UseVisualStyleBackColor = true;
-			this->btnSelectFile->Click += gcnew System::EventHandler(this, &MyForm::btnSelectFile_Click);
+			this->btnThucHien->Location = System::Drawing::Point(16, 374);
+			this->btnThucHien->Name = L"btnThucHien";
+			this->btnThucHien->Size = System::Drawing::Size(100, 40);
+			this->btnThucHien->TabIndex = 6;
+			this->btnThucHien->Text = L"Run";
+			this->btnThucHien->UseVisualStyleBackColor = true;
+			this->btnThucHien->Click += gcnew System::EventHandler(this, &MyForm::btnThucHien_Click);
 			// 
-			// lbPath
+			// txtSoLanChay
 			// 
-			this->lbPath->AutoSize = true;
-			this->lbPath->Font = (gcnew System::Drawing::Font(L"Segoe UI", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+			this->txtSoLanChay->Font = (gcnew System::Drawing::Font(L"Segoe UI", 14.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->lbPath->Location = System::Drawing::Point(16, 117);
-			this->lbPath->Name = L"lbPath";
-			this->lbPath->Size = System::Drawing::Size(96, 21);
-			this->lbPath->TabIndex = 1;
-			this->lbPath->Text = L"Video\'s path";
+			this->txtSoLanChay->Location = System::Drawing::Point(83, 291);
+			this->txtSoLanChay->Name = L"txtSoLanChay";
+			this->txtSoLanChay->Size = System::Drawing::Size(196, 33);
+			this->txtSoLanChay->TabIndex = 5;
+			this->txtSoLanChay->Value = System::Decimal(gcnew cli::array< System::Int32 >(4) { 1, 0, 0, 0 });
 			// 
-			// lbPhuongPhap
+			// lbSoLanChay
 			// 
-			this->lbPhuongPhap->AutoSize = true;
-			this->lbPhuongPhap->Font = (gcnew System::Drawing::Font(L"Segoe UI", 14.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+			this->lbSoLanChay->AutoSize = true;
+			this->lbSoLanChay->Font = (gcnew System::Drawing::Font(L"Segoe UI", 14.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->lbPhuongPhap->Location = System::Drawing::Point(16, 180);
-			this->lbPhuongPhap->Name = L"lbPhuongPhap";
-			this->lbPhuongPhap->Size = System::Drawing::Size(78, 25);
-			this->lbPhuongPhap->TabIndex = 2;
-			this->lbPhuongPhap->Text = L"Method";
+			this->lbSoLanChay->Location = System::Drawing::Point(16, 293);
+			this->lbSoLanChay->Name = L"lbSoLanChay";
+			this->lbSoLanChay->RightToLeft = System::Windows::Forms::RightToLeft::No;
+			this->lbSoLanChay->Size = System::Drawing::Size(61, 25);
+			this->lbSoLanChay->TabIndex = 4;
+			this->lbSoLanChay->Text = L"Times";
 			// 
 			// cbPhuongPhap
 			// 
@@ -158,38 +157,40 @@ namespace XuLyAnh {
 			this->cbPhuongPhap->Size = System::Drawing::Size(263, 33);
 			this->cbPhuongPhap->TabIndex = 3;
 			// 
-			// lbSoLanChay
+			// lbPhuongPhap
 			// 
-			this->lbSoLanChay->AutoSize = true;
-			this->lbSoLanChay->Font = (gcnew System::Drawing::Font(L"Segoe UI", 14.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+			this->lbPhuongPhap->AutoSize = true;
+			this->lbPhuongPhap->Font = (gcnew System::Drawing::Font(L"Segoe UI", 14.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->lbSoLanChay->Location = System::Drawing::Point(16, 293);
-			this->lbSoLanChay->Name = L"lbSoLanChay";
-			this->lbSoLanChay->RightToLeft = System::Windows::Forms::RightToLeft::No;
-			this->lbSoLanChay->Size = System::Drawing::Size(61, 25);
-			this->lbSoLanChay->TabIndex = 4;
-			this->lbSoLanChay->Text = L"Times";
+			this->lbPhuongPhap->Location = System::Drawing::Point(16, 180);
+			this->lbPhuongPhap->Name = L"lbPhuongPhap";
+			this->lbPhuongPhap->Size = System::Drawing::Size(78, 25);
+			this->lbPhuongPhap->TabIndex = 2;
+			this->lbPhuongPhap->Text = L"Method";
 			// 
-			// txtSoLanChay
+			// lbPath
 			// 
-			this->txtSoLanChay->Font = (gcnew System::Drawing::Font(L"Segoe UI", 14.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+			this->lbPath->AutoSize = true;
+			this->lbPath->Font = (gcnew System::Drawing::Font(L"Segoe UI", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->txtSoLanChay->Location = System::Drawing::Point(83, 291);
-			this->txtSoLanChay->Name = L"txtSoLanChay";
-			this->txtSoLanChay->Size = System::Drawing::Size(196, 33);
-			this->txtSoLanChay->TabIndex = 5;
+			this->lbPath->Location = System::Drawing::Point(16, 117);
+			this->lbPath->Name = L"lbPath";
+			this->lbPath->Size = System::Drawing::Size(96, 21);
+			this->lbPath->TabIndex = 1;
+			this->lbPath->Text = L"Video\'s path";
 			// 
-			// btnThucHien
+			// btnSelectFile
 			// 
-			this->btnThucHien->Font = (gcnew System::Drawing::Font(L"Segoe UI", 14.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+			this->btnSelectFile->Cursor = System::Windows::Forms::Cursors::Hand;
+			this->btnSelectFile->Font = (gcnew System::Drawing::Font(L"Segoe UI", 14.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->btnThucHien->Location = System::Drawing::Point(16, 374);
-			this->btnThucHien->Name = L"btnThucHien";
-			this->btnThucHien->Size = System::Drawing::Size(100, 40);
-			this->btnThucHien->TabIndex = 6;
-			this->btnThucHien->Text = L"Run";
-			this->btnThucHien->UseVisualStyleBackColor = true;
-			this->btnThucHien->Click += gcnew System::EventHandler(this, &MyForm::btnThucHien_Click);
+			this->btnSelectFile->Location = System::Drawing::Point(16, 59);
+			this->btnSelectFile->Name = L"btnSelectFile";
+			this->btnSelectFile->Size = System::Drawing::Size(121, 40);
+			this->btnSelectFile->TabIndex = 0;
+			this->btnSelectFile->Text = L"Select video";
+			this->btnSelectFile->UseVisualStyleBackColor = true;
+			this->btnSelectFile->Click += gcnew System::EventHandler(this, &MyForm::btnSelectFile_Click);
 			// 
 			// MyForm
 			// 
@@ -225,40 +226,39 @@ namespace XuLyAnh {
 	private: System::Void btnThucHien_Click(System::Object^  sender, System::EventArgs^  e) {
 		getInput();
 		VideoProcess ^vp = gcnew VideoProcess();
-		if (path && path != "") {
+		if (path && path != "" && times > 0) {
 			switch (method)
 			{
 			case 0: {
-				vp->ArithmeticMean(path);
+				vp->ArithmeticMean(path, times);
 				break;
 			}
 			case 1: {
-				vp->GeometricMean(path);
+				vp->GeometricMean(path, times);
 				break;
 			}
 			case 2: {
-				vp->HarmonicMean(path);
+				vp->HarmonicMean(path, times);
 				break;
 			}
 			case 3: {
-				vp->ContraharmonicMean(path);
+				vp->ContraharmonicMean(path, times);
 				break;
 			}
 			case 4: {
-				vp->AlphaTrimmed(path);
-				MessageBox::Show("4");
+				vp->AlphaTrimmed(path, times);
 				break;
 			}
 			case 5: {
-				vp->MidpointFilter(path);
+				vp->MidpointFilter(path, times);
 				break;
 			}
 			case 6: {
-				vp->MaxMinFilter(path);
+				vp->MaxMinFilter(path, times);
 				break;
 			}
 			case 7: {
-				vp->MedianFilter(path);
+				vp->MedianFilter(path, times);
 				break;
 			}
 			default: {
@@ -268,7 +268,7 @@ namespace XuLyAnh {
 			}
 		}
 		else {
-			MessageBox::Show(this, "No input video", "Error", MessageBoxButtons::OK, MessageBoxIcon::Error);
+			MessageBox::Show(this, "Please select video file, run times.", "Error", MessageBoxButtons::OK, MessageBoxIcon::Error);
 		}
 	}
 

@@ -17,14 +17,16 @@ Assembly System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c5619
 Class XuLyAnh.VideoProcess: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
     Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
   Methods:
-    ArithmeticMean(String): PrivateScope, Public, HideBySig
-    GeometricMean(String): PrivateScope, Public, HideBySig
-    HarmonicMean(String): PrivateScope, Public, HideBySig
-    ContraharmonicMean(String): PrivateScope, Public, HideBySig
-    AlphaTrimmed(String): PrivateScope, Public, HideBySig
-    MidpointFilter(String): PrivateScope, Public, HideBySig
-    MaxMinFilter(String): PrivateScope, Public, HideBySig
-    MedianFilter(String): PrivateScope, Public, HideBySig
+    ArithmeticMean(String, Int32): PrivateScope, Public, HideBySig
+    GeometricMean(String, Int32): PrivateScope, Public, HideBySig
+    HarmonicMean(String, Int32): PrivateScope, Public, HideBySig
+    ContraharmonicMean(String, Int32): PrivateScope, Public, HideBySig
+    AlphaTrimmed(String, Int32): PrivateScope, Public, HideBySig
+    MidpointFilter(String, Int32): PrivateScope, Public, HideBySig
+    MaxMinFilter(String, Int32): PrivateScope, Public, HideBySig
+    MedianFilter(String, Int32): PrivateScope, Public, HideBySig
+    toString(basic_string<char\,std::char_traits<char>\,std::allocator<char> >*, String): PrivateScope, Public, HideBySig
+    toChar(String): PrivateScope, Public, HideBySig
 Class XuLyAnh.MyForm: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
   :System.Windows.Forms.Form
     Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
