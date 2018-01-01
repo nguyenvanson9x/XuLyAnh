@@ -22,6 +22,8 @@ namespace XuLyAnh {
 
 		string toString(System::String ^ s);
 		const char* toChar(System::String ^s);
+		void alphatrimmedmeanfilter(double* image, double* result, int N, int M, int alpha);
+		void _alphatrimmedmeanfilter(const double* image, double* result, int N, int M, int alpha);
 	};
 
 }

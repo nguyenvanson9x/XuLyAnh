@@ -27,6 +27,8 @@ Class XuLyAnh.VideoProcess: AutoLayout, AnsiClass, Class, Public, BeforeFieldIni
     MedianFilter(String, Int32): PrivateScope, Public, HideBySig
     toString(basic_string<char\,std::char_traits<char>\,std::allocator<char> >*, String): PrivateScope, Public, HideBySig
     toChar(String): PrivateScope, Public, HideBySig
+    alphatrimmedmeanfilter(Double*, Double*, Int32, Int32, Int32): PrivateScope, Public, HideBySig
+    _alphatrimmedmeanfilter(Double*, Double*, Int32, Int32, Int32): PrivateScope, Public, HideBySig
 Class XuLyAnh.MyForm: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
   :System.Windows.Forms.Form
     Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
