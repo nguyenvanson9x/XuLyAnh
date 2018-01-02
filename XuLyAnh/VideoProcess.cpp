@@ -1,7 +1,7 @@
 #include "VideoProcess.h"
-#include "opencv2/opencv.hpp"
 
-using namespace cv;
+
+//using namespace cv;
 using namespace XuLyAnh;
 VideoProcess::VideoProcess()
 {
@@ -55,11 +55,21 @@ void VideoProcess::AlphaTrimmed(System::String ^ path, int times)
 			cap >> frame; // get a new frame
 			if (frame.empty())
 				break;
-			Vec3b v = frame.at<Vec3b>(3, 3);
-			cout << (double)v.val[1] << " " << (double)v.val[2] << " " << (double)v.val[3] << endl;
-			for (i = 0; i < times; i++)
-				blur(frame, frame, cvSize(5, 5), cvPoint(-1, -1));
-			imshow("Out", frame);
+
+			Mat bgr[3];
+			split(frame, bgr);
+			double *image = (double*)frame.data;
+
+			double *result = image;
+
+			int alpha = 4;
+
+			for (i = 0; i < times; i++) {
+				// denoise image
+				//alphatrimmedmeanfilter(image, result, frame.cols, frame.rows, alpha);
+				alphatrimmed(frame, alpha);
+			}
+			//imshow("Out", bgr[1]);
 			if (waitKey(30) >= 0) break;
 		}
 	}
@@ -104,7 +114,7 @@ void XuLyAnh::VideoProcess::alphatrimmedmeanfilter(double * image, double * resu
 	if (!extension)
 		return;
 	//   Create image extension
-	for (int i = 0; i < M; ++i)
+	for (int i = 0; i < M; i++)
 	{
 		memcpy(extension + (N + 2) * (i + 1) + 1, image + N * i, N * sizeof(double));
 		extension[(N + 2) * (i + 1)] = image[N * i];
@@ -159,5 +169,65 @@ void XuLyAnh::VideoProcess::_alphatrimmedmeanfilter(const double* image, double*
 		}
 }
 
+int XuLyAnh::VideoProcess::alphatrimmed(Mat img, int alpha)
+{
+	Mat img9 = img.clone();
+	const int start = alpha >> 1;
+	const int end = 9 - (alpha >> 1);
+
+	//going through whole image
+	for (int i = 1; i < img.rows - 1; i++)
+	{
+		for (int j = 1; j < img.cols - 1; j++)
+		{
+			uchar element[9];
+			Vec3b element3[9];
+			int k = 0;
+			int a = 0;
+			//selecting elements for window 3x3
+			for (int m = i - 1; m < i + 2; m++)
+			{
+				for (int n = j - 1; n < j + 2; n++)
+				{
+					element3[a] = img.at<Vec3b>(m*img.cols + n);
+					a++;
+					for (int c = 0; c < img.channels(); c++)
+					{
+						element[k] += img.at<Vec3b>(m*img.cols + n)[c];
+					}
+					k++;
+				}
+			}
+			//comparing and sorting elements in window (uchar element [9])
+			for (int b = 0; b < end; b++)
+			{
+				int min = b;
+				for (int d = b + 1; d < 9; d++)
+				{
+					if (element[d] < element[min])
+					{
+						min = d;
+						const   uchar temp = element[b];
+						element[b] = element[min];
+						element[min] = temp;
+						const   Vec3b temporary = element3[b];
+						element3[b] = element3[min];
+						element3[min] = temporary;
+					}
+				}
+
+			}
+
+			//  index in resultant image( after alpha-trimmed filter)
+			int result = (i - 1) * (img.cols - 2) + j - 1;
+			for (int l = start; l < end; l++)
+				img9.at<Vec3b>(result) += element3[l];
+			img9.at<Vec3b>(result) /= (9 - alpha);
+		}
+	}
+	namedWindow("AlphaTrimmed Filter", WINDOW_AUTOSIZE);
+	imshow("AlphaTrimmed Filter", img9);
+	return 0;
+}
 #pragma endregion
 

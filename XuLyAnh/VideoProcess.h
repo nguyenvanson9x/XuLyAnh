@@ -1,8 +1,9 @@
 #pragma once
 #include <iostream>
 #include <vcclr.h>
+#include "opencv2/opencv.hpp"
 using namespace std;
-
+using namespace cv;
 namespace XuLyAnh {
 	using namespace System;
 	using namespace Runtime::InteropServices;
@@ -24,6 +25,7 @@ namespace XuLyAnh {
 		const char* toChar(System::String ^s);
 		void alphatrimmedmeanfilter(double* image, double* result, int N, int M, int alpha);
 		void _alphatrimmedmeanfilter(const double* image, double* result, int N, int M, int alpha);
+		int alphatrimmed(Mat img, int alpha);
 	};
 
 }
