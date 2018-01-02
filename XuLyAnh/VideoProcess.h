@@ -14,12 +14,14 @@ namespace XuLyAnh {
 		void ArithmeticMean(System::String^ path, int times);
 		void GeometricMean(System::String^ path, int times);
 		void HarmonicMean(System::String^ path, int times);
+		void _HarmonicMean(const Mat &src, Mat &dst);
 		void ContraharmonicMean(System::String^ path, int times);
+		void _ContraharmonicMean(const Mat &src, Mat &dst, int kernel, double P);
 
-		void AlphaTrimmed(System::String^ path, int times);
-		void MidpointFilter(System::String^ path, int times);
-		void MaxMinFilter(System::String^ path, int times);
-		void MedianFilter(System::String^ path, int times);
+		void AlphaTrimmed(System::String ^path, int times);
+		void MidpointFilter(System::String ^path, int times);
+		void MaxMinFilter(System::String ^path, int times);
+		void MedianFilter(System::String ^path, int times);
 
 		string toString(System::String ^ s);
 		const char* toChar(System::String ^s);

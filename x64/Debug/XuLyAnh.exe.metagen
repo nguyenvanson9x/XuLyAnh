@@ -20,7 +20,9 @@ Class XuLyAnh.VideoProcess: AutoLayout, AnsiClass, Class, Public, BeforeFieldIni
     ArithmeticMean(String, Int32): PrivateScope, Public, HideBySig
     GeometricMean(String, Int32): PrivateScope, Public, HideBySig
     HarmonicMean(String, Int32): PrivateScope, Public, HideBySig
+    _HarmonicMean(Mat* IsImplicitlyDereferenced, Mat* IsImplicitlyDereferenced): PrivateScope, Public, HideBySig
     ContraharmonicMean(String, Int32): PrivateScope, Public, HideBySig
+    _ContraharmonicMean(Mat* IsImplicitlyDereferenced, Mat* IsImplicitlyDereferenced, Int32, Double): PrivateScope, Public, HideBySig
     AlphaTrimmed(String, Int32): PrivateScope, Public, HideBySig
     MidpointFilter(String, Int32): PrivateScope, Public, HideBySig
     MaxMinFilter(String, Int32): PrivateScope, Public, HideBySig

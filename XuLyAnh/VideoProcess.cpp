@@ -38,10 +38,62 @@ void VideoProcess::HarmonicMean(System::String ^ path, int times)
 {
 }
 
-void VideoProcess::ContraharmonicMean(System::String ^ path, int times)
+void XuLyAnh::VideoProcess::_HarmonicMean(const Mat & src, Mat & dst)
 {
+
 }
 
+void VideoProcess::ContraharmonicMean(System::String ^ path, int times)
+{
+	int i, j;
+	VideoCapture cap(toString(path)); // open the video
+	if (!cap.isOpened()) // check if we succeeded
+		cout << "Can't load video ";
+	Mat edges;
+	namedWindow("edges", 1);
+	for (;;)
+	{
+		Mat frame;
+		cap >> frame; // get a new frame
+		if (frame.empty())
+			break;
+		std::vector<cv::Mat> frame_gray;
+		for (i = 0; i < frame.channels(); i++)
+		{
+			Mat dst;
+			extractChannel(frame, dst, i);
+			frame_gray.push_back(dst);
+		}
+		for (i = 0; i < times; i++)
+			for (j = 0; i < frame.channels(); j++)
+				_ContraharmonicMean(frame_gray[i], frame_gray[i], 3, -2);
+		cv::merge(frame_gray, frame);
+		imshow("Out", frame);
+		if (waitKey(30) >= 0) break;
+	}
+}
+//!TO-DO _ContraharmonicMean Filter là b? l?c dùng ?? kh? nhi?u, ch? dùng vs image 8bit - 24bit lo?i nhi?u gaussian
+void VideoProcess::_ContraharmonicMean(const Mat &src, Mat &dst, int kernel, double P) // kernel là kích th??c ma tr?n m?t n?, P là giá tr? ?? chính xác dùng trong ph??ng trình d??i
+{
+	Mat temp = src.clone();
+	for (int row = kernel / 2; row < temp.rows - kernel / 2 - 1; row++)
+	{
+		for (int col = kernel / 2; col < temp.cols - kernel / 2 - 1; col++)
+		{
+			double den = 0, num = 0;
+			for (int i = -(kernel / 2); i <= (kernel / 2); i++)
+			{
+				for (int j = -(kernel / 2); j <= (kernel / 2); j++)
+				{
+					den += pow(temp.at<uchar>(row + i, col + j), P);
+					num += pow(temp.at<uchar>(row + i, col + j), P + 1);
+				}
+			}
+			dst.at<uchar>(row, col) = num / den;
+		}
+	}
+	dst.convertTo(dst, CV_8U);
+}
 void VideoProcess::AlphaTrimmed(System::String ^ path, int times)
 {
 	int i;
@@ -77,14 +129,74 @@ void VideoProcess::AlphaTrimmed(System::String ^ path, int times)
 
 void VideoProcess::MidpointFilter(System::String ^ path, int times)
 {
+	CvCapture* capture = cvCreateFileCapture(toChar(path));
+	IplImage* frame;
+	int i;
+	while (1) {
+		frame = cvQueryFrame(capture);
+		if (!frame) break;
+		cvShowImage("Original", frame);
+		// for max filter
+		IplImage *dstMax = cvCreateImage(cvSize(frame->width, frame->height), frame->depth, 3);
+		// for min filter
+		IplImage *dstMin = cvCreateImage(cvSize(frame->width, frame->height), frame->depth, 3);
+		// for result
+		IplImage *dst = cvCreateImage(cvSize(frame->width, frame->height), frame->depth, 3);
+		Mat result;
+		for (i = 0; i < times; i++) {
+			cvDilate(frame, dstMax, NULL, 1);
+			cvErode(frame, dstMin, NULL, 1);
+			cvAdd(dstMax, dstMin, dst, NULL);
+			result = cvarrToMat(dst);
+			result /= 2;
+		}
+		imshow("Result_Midpoint", result);
+		char c = cvWaitKey(33);
+		if (c == 27) break;
+	}
+	cvReleaseCapture(&capture);
+	cvDestroyWindow("Example2");
 }
 
 void XuLyAnh::VideoProcess::MaxMinFilter(System::String ^ path, int times)
 {
+	CvCapture* capture = cvCreateFileCapture(toChar(path));
+	IplImage* frame;
+	int i;
+	while (1) {
+		frame = cvQueryFrame(capture);
+		if (!frame) break;
+		cvShowImage("Original", frame);
+		IplImage *dstMax = cvCreateImage(cvSize(frame->width, frame->height), frame->depth, 3);
+		for (i = 0; i < times; i++)
+			cvDilate(frame, dstMax, NULL, 1);
+		cvShowImage("Result_Max", dstMax);
+		char c = cvWaitKey(33);
+		if (c == 27) break;
+	}
+	cvReleaseCapture(&capture);
+	cvDestroyWindow("Example2");
 }
 
 void XuLyAnh::VideoProcess::MedianFilter(System::String ^ path, int times)
 {
+	int i;
+	VideoCapture cap(toString(path)); // open the video
+	if (!cap.isOpened()) // check if we succeeded
+		cout << "Can't load video ";
+	Mat edges;
+	namedWindow("edges", 1);
+	for (;;)
+	{
+		Mat frame;
+		cap >> frame; // get a new frame
+		if (frame.empty())
+			break;
+		for (i = 0; i < times; i++)
+			medianBlur(frame, frame, 3); //  3 là size ma tr?n m?t n? 
+		imshow("Out", frame);
+		if (waitKey(30) >= 0) break;
+	}
 }
 
 
