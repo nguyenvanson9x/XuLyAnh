@@ -1,5 +1,5 @@
 #include "VideoProcess.h"
-
+#include "memory.h"
 
 //using namespace cv;
 using namespace XuLyAnh;
@@ -53,32 +53,31 @@ void VideoProcess::ContraharmonicMean(System::String ^ path, int times)
 	namedWindow("edges", 1);
 	for (;;)
 	{
-		Mat frame;
-		cap >> frame; // get a new frame
-		if (frame.empty())
+		Mat src;
+		cap >> src; // get a new frame
+		if (src.empty())
 			break;
-		std::vector<cv::Mat> frame_gray;
-		for (i = 0; i < frame.channels(); i++)
+		Mat aux[3];
+		split(src, aux);
+		for (i = 0; i < 3; i++)
 		{
-			Mat dst;
-			extractChannel(frame, dst, i);
-			frame_gray.push_back(dst);
+			for (j = 0; j < times; j++)
+				_ContraharmonicMean(aux[i], aux[i], 3, 0.05);
 		}
-		for (i = 0; i < times; i++)
-			for (j = 0; i < frame.channels(); j++)
-				_ContraharmonicMean(frame_gray[i], frame_gray[i], 3, -2);
-		cv::merge(frame_gray, frame);
-		imshow("Out", frame);
-		if (waitKey(30) >= 0) break;
+		merge(aux, 3, src);
+		imshow("Out", src);
+		if (waitKey(30) >= 0)
+			break;
 	}
 }
 //!TO-DO _ContraharmonicMean Filter là b? l?c dùng ?? kh? nhi?u, ch? dùng vs image 8bit - 24bit lo?i nhi?u gaussian
 void VideoProcess::_ContraharmonicMean(const Mat &src, Mat &dst, int kernel, double P) // kernel là kích th??c ma tr?n m?t n?, P là giá tr? ?? chính xác dùng trong ph??ng trình d??i
 {
-	Mat temp = src.clone();
-	for (int row = kernel / 2; row < temp.rows - kernel / 2 - 1; row++)
+	Mat temp;
+	copyMakeBorder(src, temp, floor(kernel / 2), floor(kernel / 2), floor(kernel / 2), floor(kernel / 2), BORDER_CONSTANT, Scalar(0, 0, 0));
+	for (int row = 1; row < temp.rows - kernel / 2 - 1; row++)
 	{
-		for (int col = kernel / 2; col < temp.cols - kernel / 2 - 1; col++)
+		for (int col = 1; col < temp.cols - kernel / 2 - 1; col++)
 		{
 			double den = 0, num = 0;
 			for (int i = -(kernel / 2); i <= (kernel / 2); i++)
@@ -110,16 +109,19 @@ void VideoProcess::AlphaTrimmed(System::String ^ path, int times)
 
 			Mat bgr[3];
 			split(frame, bgr);
-			double *image = (double*)frame.data;
-
-			double *result = image;
+			double *image = (double*)frame.ptr<double>(0);
+			double *result;
 
 			int alpha = 4;
 
 			for (i = 0; i < times; i++) {
 				// denoise image
-				//alphatrimmedmeanfilter(image, result, frame.cols, frame.rows, alpha);
-				alphatrimmed(frame, alpha);
+				alphatrimmedmeanfilter(image, result, frame.cols, frame.rows, alpha);
+				/*
+				Mat extend_frame;
+				copyMakeBorder(frame, extend_frame, 1, 1, 1, 1, cv::BORDER_CONSTANT, Scalar(0));
+				alphatrimmed(frame, extend_frame, alpha);
+				*/
 			}
 			//imshow("Out", bgr[1]);
 			if (waitKey(30) >= 0) break;
@@ -281,16 +283,16 @@ void XuLyAnh::VideoProcess::_alphatrimmedmeanfilter(const double* image, double*
 		}
 }
 
-int XuLyAnh::VideoProcess::alphatrimmed(Mat img, int alpha)
+int XuLyAnh::VideoProcess::alphatrimmed(Mat img, Mat extend_frame, int alpha)
 {
 	Mat img9 = img.clone();
 	const int start = alpha >> 1;
 	const int end = 9 - (alpha >> 1);
 
 	//going through whole image
-	for (int i = 1; i < img.rows - 1; i++)
+	for (int i = 1; i < extend_frame.rows - 1; i++)
 	{
-		for (int j = 1; j < img.cols - 1; j++)
+		for (int j = 1; j < extend_frame.cols - 1; j++)
 		{
 			uchar element[9];
 			Vec3b element3[9];
@@ -301,37 +303,30 @@ int XuLyAnh::VideoProcess::alphatrimmed(Mat img, int alpha)
 			{
 				for (int n = j - 1; n < j + 2; n++)
 				{
-					element3[a] = img.at<Vec3b>(m*img.cols + n);
-					a++;
-					for (int c = 0; c < img.channels(); c++)
-					{
-						element[k] += img.at<Vec3b>(m*img.cols + n)[c];
-					}
-					k++;
+					element3[a++] = extend_frame.at<Vec3b>(m*extend_frame.cols + n);
+					for (int c = 0; c < extend_frame.channels(); c++)
+						element[k++] += extend_frame.at<Vec3b>(m*extend_frame.cols + n)[c];
 				}
 			}
+			cout << k;
 			//comparing and sorting elements in window (uchar element [9])
 			for (int b = 0; b < end; b++)
 			{
 				int min = b;
 				for (int d = b + 1; d < 9; d++)
-				{
 					if (element[d] < element[min])
-					{
 						min = d;
-						const   uchar temp = element[b];
-						element[b] = element[min];
-						element[min] = temp;
-						const   Vec3b temporary = element3[b];
-						element3[b] = element3[min];
-						element3[min] = temporary;
-					}
-				}
+				const   uchar temp = element[b];
+				element[b] = element[min];
+				element[min] = temp;
+				const   Vec3b temporary = element3[b];
+				element3[b] = element3[min];
+				element3[min] = temporary;
 
 			}
 
 			//  index in resultant image( after alpha-trimmed filter)
-			int result = (i - 1) * (img.cols - 2) + j - 1;
+			int result = (i - 1) * (extend_frame.cols - 2) + j - 1;
 			for (int l = start; l < end; l++)
 				img9.at<Vec3b>(result) += element3[l];
 			img9.at<Vec3b>(result) /= (9 - alpha);
