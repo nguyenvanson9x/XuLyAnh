@@ -17,10 +17,10 @@ namespace XuLyAnh {
 		void _GeometricMean(const Mat &src, Mat &dst, int kernel, int M, int N);
 		void HarmonicMean(System::String^ path, int times);
 		void _HarmonicMean(const Mat &src, Mat &dst, int kernel, int M, int N);
-		void ContraharmonicMean(System::String^ path, int times);
+		void ContraharmonicMean(System::String^ path, int times, double P);
 		void _ContraharmonicMean(const Mat &src, Mat &dst, int kernel, double P);
 
-		void AlphaTrimmed(System::String ^path, int times);
+		void AlphaTrimmed(System::String ^path, int times, int alpha);
 		void MidpointFilter(System::String ^path, int times);
 		void MaxFilter(System::String ^path, int times);
 		void MinFilter(System::String ^path, int times);

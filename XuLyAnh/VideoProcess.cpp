@@ -131,7 +131,7 @@ void XuLyAnh::VideoProcess::_HarmonicMean(const Mat & src, Mat & dst, int kernel
 	dst.convertTo(dst, CV_8U);
 }
 
-void VideoProcess::ContraharmonicMean(System::String ^ path, int times)
+void VideoProcess::ContraharmonicMean(System::String ^ path, int times, double P)
 {
 	int i, j;
 	VideoCapture cap(toString(path)); // open the video
@@ -150,7 +150,7 @@ void VideoProcess::ContraharmonicMean(System::String ^ path, int times)
 		for (i = 0; i < 3; i++)
 		{
 			for (j = 0; j < times; j++)
-				_ContraharmonicMean(aux[i], aux[i], 3, 0.05);
+				_ContraharmonicMean(aux[i], aux[i], 3, P);
 		}
 		merge(aux, 3, src);
 		imshow("Out", src);
@@ -183,7 +183,7 @@ void VideoProcess::_ContraharmonicMean(const Mat &src, Mat &dst, int kernel, dou
 	dst.convertTo(dst, CV_8U);
 }
 
-void VideoProcess::AlphaTrimmed(System::String ^ path, int times)
+void VideoProcess::AlphaTrimmed(System::String ^ path, int times, int alpha)
 {
 	int i, c;
 	VideoCapture cap(toString(path)); // open the video
@@ -202,7 +202,6 @@ void VideoProcess::AlphaTrimmed(System::String ^ path, int times)
 			double *image = (double*)bgr[0].ptr<double>(0);
 			double *result = nullptr;
 
-			int alpha = 4;
 			// denoise each channel
 			for (c = 0; c < frame.channels(); c++) {
 				for (i = 0; i < times; i++) {
@@ -232,11 +231,11 @@ void VideoProcess::MidpointFilter(System::String ^ path, int times)
 		if (!frame) break;
 		cvShowImage("Original", frame);
 		// for max filter
-		IplImage *dstMax = cvCreateImage(cvSize(frame->width, frame->height), frame->depth, 3);
+		IplImage *dstMax = cvCreateImage(cvSize(frame->width, frame->height), frame->depth, frame->nChannels);
 		// for min filter
-		IplImage *dstMin = cvCreateImage(cvSize(frame->width, frame->height), frame->depth, 3);
+		IplImage *dstMin = cvCreateImage(cvSize(frame->width, frame->height), frame->depth, frame->nChannels);
 		// for result
-		IplImage *dst = cvCreateImage(cvSize(frame->width, frame->height), frame->depth, 3);
+		IplImage *dst = cvCreateImage(cvSize(frame->width, frame->height), frame->depth, frame->nChannels);
 		Mat result;
 		for (i = 0; i < times; i++) {
 			cvDilate(frame, dstMax, NULL, 1);
@@ -262,7 +261,7 @@ void XuLyAnh::VideoProcess::MaxFilter(System::String ^ path, int times)
 		frame = cvQueryFrame(capture);
 		if (!frame) break;
 		cvShowImage("Original", frame);
-		IplImage *dstMax = cvCreateImage(cvSize(frame->width, frame->height), frame->depth, 3);
+		IplImage *dstMax = cvCreateImage(cvSize(frame->width, frame->height), frame->depth, frame->nChannels);
 		for (i = 0; i < times; i++)
 			cvDilate(frame, dstMax, NULL, 1);
 		cvShowImage("Result_Max", dstMax);
@@ -282,7 +281,7 @@ void XuLyAnh::VideoProcess::MinFilter(System::String ^ path, int times)
 		frame = cvQueryFrame(capture);
 		if (!frame) break;
 		cvShowImage("Original", frame);
-		IplImage *dstMin = cvCreateImage(cvSize(frame->width, frame->height), frame->depth, 3);
+		IplImage *dstMin = cvCreateImage(cvSize(frame->width, frame->height), frame->depth, frame->nChannels);
 		for (i = 0; i < times; i++)
 			cvErode(frame, dstMin, NULL, 1);
 		cvShowImage("Result_Min", dstMin);

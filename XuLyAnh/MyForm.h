@@ -55,6 +55,14 @@ namespace XuLyAnh {
 		System::String ^path;
 		int times = 0;
 		int method = -1;
+		double P;
+		int alpha = 0;
+	private: System::Windows::Forms::Label^  lbOptions;
+	private: System::Windows::Forms::Label^  lbContraharmonic;
+	private: System::Windows::Forms::TextBox^  txtOrder;
+
+	private: System::Windows::Forms::Label^  lbAlphaTrimmed;
+	private: System::Windows::Forms::ComboBox^  cbAlpha;
 
 #pragma region Windows Form Designer generated code
 		/// <summary>
@@ -64,6 +72,11 @@ namespace XuLyAnh {
 		void InitializeComponent(void)
 		{
 			this->pnControl = (gcnew System::Windows::Forms::Panel());
+			this->cbAlpha = (gcnew System::Windows::Forms::ComboBox());
+			this->lbAlphaTrimmed = (gcnew System::Windows::Forms::Label());
+			this->txtOrder = (gcnew System::Windows::Forms::TextBox());
+			this->lbContraharmonic = (gcnew System::Windows::Forms::Label());
+			this->lbOptions = (gcnew System::Windows::Forms::Label());
 			this->btnThucHien = (gcnew System::Windows::Forms::Button());
 			this->txtSoLanChay = (gcnew System::Windows::Forms::NumericUpDown());
 			this->lbSoLanChay = (gcnew System::Windows::Forms::Label());
@@ -77,9 +90,12 @@ namespace XuLyAnh {
 			// 
 			// pnControl
 			// 
-			this->pnControl->Anchor = static_cast<System::Windows::Forms::AnchorStyles>(((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Bottom)
-				| System::Windows::Forms::AnchorStyles::Right));
 			this->pnControl->BackColor = System::Drawing::SystemColors::Control;
+			this->pnControl->Controls->Add(this->cbAlpha);
+			this->pnControl->Controls->Add(this->lbAlphaTrimmed);
+			this->pnControl->Controls->Add(this->txtOrder);
+			this->pnControl->Controls->Add(this->lbContraharmonic);
+			this->pnControl->Controls->Add(this->lbOptions);
 			this->pnControl->Controls->Add(this->btnThucHien);
 			this->pnControl->Controls->Add(this->txtSoLanChay);
 			this->pnControl->Controls->Add(this->lbSoLanChay);
@@ -87,12 +103,62 @@ namespace XuLyAnh {
 			this->pnControl->Controls->Add(this->lbPhuongPhap);
 			this->pnControl->Controls->Add(this->lbPath);
 			this->pnControl->Controls->Add(this->btnSelectFile);
+			this->pnControl->Dock = System::Windows::Forms::DockStyle::Fill;
 			this->pnControl->Font = (gcnew System::Drawing::Font(L"Arial Narrow", 14.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->pnControl->Location = System::Drawing::Point(12, 12);
+			this->pnControl->Location = System::Drawing::Point(0, 0);
 			this->pnControl->Name = L"pnControl";
-			this->pnControl->Size = System::Drawing::Size(920, 477);
+			this->pnControl->Size = System::Drawing::Size(649, 501);
 			this->pnControl->TabIndex = 1;
+			// 
+			// cbAlpha
+			// 
+			this->cbAlpha->FormattingEnabled = true;
+			this->cbAlpha->Items->AddRange(gcnew cli::array< System::Object^  >(5) { L"0", L"2", L"4", L"6", L"8" });
+			this->cbAlpha->Location = System::Drawing::Point(541, 178);
+			this->cbAlpha->Name = L"cbAlpha";
+			this->cbAlpha->Size = System::Drawing::Size(90, 31);
+			this->cbAlpha->TabIndex = 11;
+			// 
+			// lbAlphaTrimmed
+			// 
+			this->lbAlphaTrimmed->AutoSize = true;
+			this->lbAlphaTrimmed->Font = (gcnew System::Drawing::Font(L"Segoe UI", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->lbAlphaTrimmed->Location = System::Drawing::Point(369, 183);
+			this->lbAlphaTrimmed->Name = L"lbAlphaTrimmed";
+			this->lbAlphaTrimmed->Size = System::Drawing::Size(161, 21);
+			this->lbAlphaTrimmed->TabIndex = 10;
+			this->lbAlphaTrimmed->Text = L"Alpha-Trimmed Mean";
+			// 
+			// txtOrder
+			// 
+			this->txtOrder->Location = System::Drawing::Point(541, 112);
+			this->txtOrder->Name = L"txtOrder";
+			this->txtOrder->Size = System::Drawing::Size(90, 29);
+			this->txtOrder->TabIndex = 9;
+			// 
+			// lbContraharmonic
+			// 
+			this->lbContraharmonic->AutoSize = true;
+			this->lbContraharmonic->Font = (gcnew System::Drawing::Font(L"Segoe UI", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->lbContraharmonic->Location = System::Drawing::Point(369, 117);
+			this->lbContraharmonic->Name = L"lbContraharmonic";
+			this->lbContraharmonic->Size = System::Drawing::Size(166, 21);
+			this->lbContraharmonic->TabIndex = 8;
+			this->lbContraharmonic->Text = L"Contraharmonic Mean";
+			// 
+			// lbOptions
+			// 
+			this->lbOptions->AutoSize = true;
+			this->lbOptions->Font = (gcnew System::Drawing::Font(L"Segoe UI", 16, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->lbOptions->Location = System::Drawing::Point(368, 63);
+			this->lbOptions->Name = L"lbOptions";
+			this->lbOptions->Size = System::Drawing::Size(95, 30);
+			this->lbOptions->TabIndex = 7;
+			this->lbOptions->Text = L"Options";
 			// 
 			// btnThucHien
 			// 
@@ -184,9 +250,10 @@ namespace XuLyAnh {
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->BackColor = System::Drawing::SystemColors::HighlightText;
-			this->ClientSize = System::Drawing::Size(944, 501);
+			this->ClientSize = System::Drawing::Size(649, 501);
 			this->Controls->Add(this->pnControl);
 			this->FormBorderStyle = System::Windows::Forms::FormBorderStyle::FixedSingle;
+			this->MaximumSize = System::Drawing::Size(665, 540);
 			this->Name = L"MyForm";
 			this->StartPosition = System::Windows::Forms::FormStartPosition::CenterScreen;
 			this->Text = L"Video Processing";
@@ -228,11 +295,12 @@ namespace XuLyAnh {
 				break;
 			}
 			case 3: {
-				vp->ContraharmonicMean(path, times);
+				if (P != 0)
+					vp->ContraharmonicMean(path, times, P);
 				break;
 			}
 			case 4: {
-				vp->AlphaTrimmed(path, times);
+				vp->AlphaTrimmed(path, times, alpha);
 				break;
 			}
 			case 5: {
@@ -268,6 +336,19 @@ namespace XuLyAnh {
 
 		// Get method
 		method = cbPhuongPhap->SelectedIndex;
+
+		// get Order
+		try
+		{
+			P = Double::Parse(txtOrder->Text);
+		}
+		catch (System::Exception ^ex)
+		{
+	
+		}
+
+		// get Alpha
+		alpha = cbAlpha->SelectedIndex * 2;
 	}
 
 	private: System::Void cbPhuongPhap_SelectedIndexChanged(System::Object^  sender, System::EventArgs^  e) {
