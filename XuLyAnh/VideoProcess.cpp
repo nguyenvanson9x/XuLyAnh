@@ -32,15 +32,103 @@ void VideoProcess::ArithmeticMean(System::String ^path, int times)
 
 void VideoProcess::GeometricMean(System::String ^ path, int times)
 {
+	int i, j;
+	VideoCapture cap(toString(path)); // open the video
+	if (!cap.isOpened()) // check if we succeeded
+		cout << "Can't load video ";
+	Mat edges;
+	namedWindow("edges", 1);
+	for (;;)
+	{
+		Mat frame;
+		cap >> frame; // get a new frame
+		if (frame.empty())
+			break;
+		Mat aux[3];
+		split(frame, aux);
+		for (i = 0; i < 3; i++)
+		{
+			for (j = 0; j < times; j++)
+				_GeometricMean(aux[i], aux[i], 3, 3, 3);
+		}
+		merge(aux, 3, frame);
+		imshow("OutGeometricMean", frame);
+		if (waitKey(30) >= 0)
+			break;
+	}
+}
+
+void XuLyAnh::VideoProcess::_GeometricMean(const Mat &src, Mat &dst, int kernel, int M, int N)
+{
+	Mat temp = src.clone();
+	//	copyMakeBorder(src, temp, (kernel - 1) / 2, (kernel - 1) / 2, (kernel - 1) / 2, (kernel - 1) / 2, BORDER_CONSTANT, Scalar(0, 0, 0));
+	double mu = (double)1 / (M * N);
+	for (int row = kernel / 2; row < temp.rows - kernel / 2 - 1; row++)
+	{
+		for (int col = kernel / 2; col < temp.cols - kernel / 2 - 1; col++)
+		{
+			double multi = 1;
+			for (int i = -(kernel / 2); i <= (kernel / 2); i++)
+			{
+				for (int j = -(kernel / 2); j <= (kernel / 2); j++)
+				{
+					multi *= (double)temp.at<uchar>(row + i, col + j);
+				}
+			}
+			dst.at<uchar>(row, col) = pow(multi, mu);
+		}
+	}
+	dst.convertTo(dst, CV_8U);
 }
 
 void VideoProcess::HarmonicMean(System::String ^ path, int times)
 {
+	int i, j;
+	VideoCapture cap(toString(path)); // open the video
+	if (!cap.isOpened()) // check if we succeeded
+		cout << "Can't load video ";
+	Mat edges;
+	namedWindow("edges", 1);
+	for (;;)
+	{
+		Mat src;
+		cap >> src; // get a new frame
+		if (src.empty())
+			break;
+		Mat aux[3];
+		split(src, aux);
+		for (i = 0; i < 3; i++)
+		{
+			for (j = 0; j < times; j++)
+				_HarmonicMean(aux[i], aux[i], 3, 3, 3);
+		}
+		merge(aux, 3, src);
+		imshow("OutHarmonic", src);
+		if (waitKey(30) >= 0)
+			break;
+	}
 }
 
-void XuLyAnh::VideoProcess::_HarmonicMean(const Mat & src, Mat & dst)
+void XuLyAnh::VideoProcess::_HarmonicMean(const Mat & src, Mat & dst, int kernel, int M, int N)
 {
-
+	Mat temp = src.clone();
+	//	copyMakeBorder(src, temp, (kernel - 1) / 2, (kernel - 1) / 2, (kernel - 1) / 2, (kernel - 1) / 2, BORDER_CONSTANT, Scalar(0, 0, 0));
+	for (int row = kernel / 2; row < temp.rows - kernel / 2 - 1; row++)
+	{
+		for (int col = kernel / 2; col < temp.cols - kernel / 2 - 1; col++)
+		{
+			double sum = 0;
+			for (int i = -(kernel / 2); i <= (kernel / 2); i++)
+			{
+				for (int j = -(kernel / 2); j <= (kernel / 2); j++)
+				{
+					sum += (double)temp.at<uchar>(row + i, col + j) != 0 ? 1 / (double)temp.at<uchar>(row + i, col + j) : 0;
+				}
+			}
+			dst.at<uchar>(row, col) = (double)(M * N) / sum;
+		}
+	}
+	dst.convertTo(dst, CV_8U);
 }
 
 void VideoProcess::ContraharmonicMean(System::String ^ path, int times)
@@ -71,6 +159,7 @@ void VideoProcess::ContraharmonicMean(System::String ^ path, int times)
 	}
 }
 //!TO-DO _ContraharmonicMean Filter là b? l?c dùng ?? kh? nhi?u, ch? dùng vs image 8bit - 24bit lo?i nhi?u gaussian
+
 void VideoProcess::_ContraharmonicMean(const Mat &src, Mat &dst, int kernel, double P) // kernel là kích th??c ma tr?n m?t n?, P là giá tr? ?? chính xác dùng trong ph??ng trình d??i
 {
 	Mat temp;
@@ -93,6 +182,7 @@ void VideoProcess::_ContraharmonicMean(const Mat &src, Mat &dst, int kernel, dou
 	}
 	dst.convertTo(dst, CV_8U);
 }
+
 void VideoProcess::AlphaTrimmed(System::String ^ path, int times)
 {
 	int i;
@@ -109,19 +199,19 @@ void VideoProcess::AlphaTrimmed(System::String ^ path, int times)
 
 			Mat bgr[3];
 			split(frame, bgr);
-			double *image = (double*)frame.ptr<double>(0);
-			double *result;
+			double *image = (double*)bgr[0].ptr<double>(0);
+			double *result = nullptr;
 
 			int alpha = 4;
 
 			for (i = 0; i < times; i++) {
 				// denoise image
-				alphatrimmedmeanfilter(image, result, frame.cols, frame.rows, alpha);
-				/*
+				//alphatrimmedmeanfilter(image, result, frame.cols, frame.rows, alpha);
 				Mat extend_frame;
-				copyMakeBorder(frame, extend_frame, 1, 1, 1, 1, cv::BORDER_CONSTANT, Scalar(0));
-				alphatrimmed(frame, extend_frame, alpha);
-				*/
+				copyMakeBorder(bgr[0], extend_frame, 1, 1, 1, 1, cv::BORDER_CONSTANT, Scalar(0));
+				double *extension = (double*)extend_frame.ptr<double>(0);
+				//alphatrimmed(frame, extend_frame, alpha);
+				alphatrimmedmeanfilter(image, extension, result, frame.cols, frame.rows, alpha);
 			}
 			//imshow("Out", bgr[1]);
 			if (waitKey(30) >= 0) break;
@@ -219,6 +309,7 @@ const char * XuLyAnh::VideoProcess::toChar(System::String ^ s)
 
 void XuLyAnh::VideoProcess::alphatrimmedmeanfilter(double * image, double * result, int N, int M, int alpha)
 {
+	// error
 	//   Check arguments
 	if (!image || N < 1 || M < 1 || alpha < 0 || 8 < alpha || alpha & 1)
 		return;
@@ -244,6 +335,12 @@ void XuLyAnh::VideoProcess::alphatrimmedmeanfilter(double * image, double * resu
 	delete[] extension;
 }
 
+void XuLyAnh::VideoProcess::alphatrimmedmeanfilter(double * image, double * extend_image, double * result, int N, int M, int alpha)
+{
+	_alphatrimmedmeanfilter(extend_image, result ? result : image, N + 2, M + 2, alpha);
+	
+}
+
 void XuLyAnh::VideoProcess::_alphatrimmedmeanfilter(const double* image, double* result, int N, int M, int alpha)
 {
 	//   Start of the trimmed ordered set
@@ -251,21 +348,21 @@ void XuLyAnh::VideoProcess::_alphatrimmedmeanfilter(const double* image, double*
 	//   End of the trimmed ordered set
 	const int end = 9 - (alpha >> 1);
 	//   Move window through all elements of the image
-	for (int m = 1; m < M - 1; ++m)
-		for (int n = 1; n < N - 1; ++n)
+	for (int m = 1; m < M - 1; m++)
+		for (int n = 1; n < N - 1; n++)
 		{
 			//   Pick up window elements
 			int k = 0;
 			double window[9];
-			for (int j = m - 1; j < m + 2; ++j)
-				for (int i = n - 1; i < n + 2; ++i)
+			for (int j = m - 1; j < m + 2; j++)
+				for (int i = n - 1; i < n + 2; i++)
 					window[k++] = image[j * N + i];
 			//   Order elements (only necessary part of them)
-			for (int j = 0; j < end; ++j)
+			for (int j = 0; j < end; j++)
 			{
 				//   Find position of minimum element
 				int min = j;
-				for (int l = j + 1; l < 9; ++l)
+				for (int l = j + 1; l < 9; l++)
 					if (window[l] < window[min])
 						min = l;
 				//   Put found minimum element in its place
@@ -276,8 +373,8 @@ void XuLyAnh::VideoProcess::_alphatrimmedmeanfilter(const double* image, double*
 			//   Target index in result image
 			const int target = (m - 1) * (N - 2) + n - 1;
 			//   Get result - the mean value of the elements in trimmed set
-			result[target] = window[start];
-			for (int j = start + 1; j < end; ++j)
+			result[target] = 0;
+			for (int j = start; j < end; j++)
 				result[target] += window[j];
 			result[target] /= 9 - alpha;
 		}
@@ -285,6 +382,7 @@ void XuLyAnh::VideoProcess::_alphatrimmedmeanfilter(const double* image, double*
 
 int XuLyAnh::VideoProcess::alphatrimmed(Mat img, Mat extend_frame, int alpha)
 {
+	// error
 	Mat img9 = img.clone();
 	const int start = alpha >> 1;
 	const int end = 9 - (alpha >> 1);

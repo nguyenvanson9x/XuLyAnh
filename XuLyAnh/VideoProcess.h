@@ -14,8 +14,9 @@ namespace XuLyAnh {
 		VideoProcess();
 		void ArithmeticMean(System::String^ path, int times);
 		void GeometricMean(System::String^ path, int times);
+		void _GeometricMean(const Mat &src, Mat &dst, int kernel, int M, int N);
 		void HarmonicMean(System::String^ path, int times);
-		void _HarmonicMean(const Mat &src, Mat &dst);
+		void _HarmonicMean(const Mat &src, Mat &dst, int kernel, int M, int N);
 		void ContraharmonicMean(System::String^ path, int times);
 		void _ContraharmonicMean(const Mat &src, Mat &dst, int kernel, double P);
 
@@ -27,6 +28,7 @@ namespace XuLyAnh {
 		string toString(System::String ^ s);
 		const char* toChar(System::String ^s);
 		void alphatrimmedmeanfilter(double* image, double* result, int N, int M, int alpha);
+		void alphatrimmedmeanfilter(double * image, double* extend_image, double * result, int N, int M, int alpha);
 		void _alphatrimmedmeanfilter(const double* image, double* result, int N, int M, int alpha);
 		int alphatrimmed(Mat img, Mat ext, int alpha);
 	};

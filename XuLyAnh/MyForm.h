@@ -156,6 +156,7 @@ namespace XuLyAnh {
 			this->cbPhuongPhap->Name = L"cbPhuongPhap";
 			this->cbPhuongPhap->Size = System::Drawing::Size(263, 33);
 			this->cbPhuongPhap->TabIndex = 3;
+			this->cbPhuongPhap->SelectedIndexChanged += gcnew System::EventHandler(this, &MyForm::cbPhuongPhap_SelectedIndexChanged);
 			// 
 			// lbPhuongPhap
 			// 
@@ -280,5 +281,7 @@ namespace XuLyAnh {
 		method = cbPhuongPhap->SelectedIndex;
 	}
 
-	};
+	private: System::Void cbPhuongPhap_SelectedIndexChanged(System::Object^  sender, System::EventArgs^  e) {
+	}
+};
 }
