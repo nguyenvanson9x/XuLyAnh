@@ -34,7 +34,7 @@ namespace XuLyAnh {
 				delete components;
 			}
 		}
-	private: System::Windows::Forms::Panel^  pnPlayer;
+
 	private: System::Windows::Forms::Panel^  pnControl;
 	private: System::Windows::Forms::Button^  btnSelectFile;
 	private: System::Windows::Forms::Label^  lbPath;
@@ -63,7 +63,6 @@ namespace XuLyAnh {
 		/// </summary>
 		void InitializeComponent(void)
 		{
-			this->pnPlayer = (gcnew System::Windows::Forms::Panel());
 			this->pnControl = (gcnew System::Windows::Forms::Panel());
 			this->btnThucHien = (gcnew System::Windows::Forms::Button());
 			this->txtSoLanChay = (gcnew System::Windows::Forms::NumericUpDown());
@@ -75,19 +74,6 @@ namespace XuLyAnh {
 			this->pnControl->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->txtSoLanChay))->BeginInit();
 			this->SuspendLayout();
-			// 
-			// pnPlayer
-			// 
-			this->pnPlayer->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Bottom)
-				| System::Windows::Forms::AnchorStyles::Left)
-				| System::Windows::Forms::AnchorStyles::Right));
-			this->pnPlayer->BackColor = System::Drawing::SystemColors::ActiveCaption;
-			this->pnPlayer->Font = (gcnew System::Drawing::Font(L"Arial Narrow", 14.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(0)));
-			this->pnPlayer->Location = System::Drawing::Point(12, 12);
-			this->pnPlayer->Name = L"pnPlayer";
-			this->pnPlayer->Size = System::Drawing::Size(620, 477);
-			this->pnPlayer->TabIndex = 0;
 			// 
 			// pnControl
 			// 
@@ -103,9 +89,9 @@ namespace XuLyAnh {
 			this->pnControl->Controls->Add(this->btnSelectFile);
 			this->pnControl->Font = (gcnew System::Drawing::Font(L"Arial Narrow", 14.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->pnControl->Location = System::Drawing::Point(638, 12);
+			this->pnControl->Location = System::Drawing::Point(12, 12);
 			this->pnControl->Name = L"pnControl";
-			this->pnControl->Size = System::Drawing::Size(294, 477);
+			this->pnControl->Size = System::Drawing::Size(920, 477);
 			this->pnControl->TabIndex = 1;
 			// 
 			// btnThucHien
@@ -148,9 +134,9 @@ namespace XuLyAnh {
 			this->cbPhuongPhap->Font = (gcnew System::Drawing::Font(L"Segoe UI", 14.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
 			this->cbPhuongPhap->FormattingEnabled = true;
-			this->cbPhuongPhap->Items->AddRange(gcnew cli::array< System::Object^  >(8) {
+			this->cbPhuongPhap->Items->AddRange(gcnew cli::array< System::Object^  >(9) {
 				L"Arithmetic Mean", L"Geometric Mean", L"Harmonic Mean",
-					L"Contraharmonic Mean", L"Alpha-Trimmed Mean Filter", L"Midpoint Filter", L"Max và Min Filter", L"Median Filter"
+					L"Contraharmonic Mean", L"Alpha-Trimmed Mean Filter", L"Midpoint Filter", L"Max Filter", L"Min Filter", L"Median Filter"
 			});
 			this->cbPhuongPhap->Location = System::Drawing::Point(16, 221);
 			this->cbPhuongPhap->Name = L"cbPhuongPhap";
@@ -200,7 +186,6 @@ namespace XuLyAnh {
 			this->BackColor = System::Drawing::SystemColors::HighlightText;
 			this->ClientSize = System::Drawing::Size(944, 501);
 			this->Controls->Add(this->pnControl);
-			this->Controls->Add(this->pnPlayer);
 			this->FormBorderStyle = System::Windows::Forms::FormBorderStyle::FixedSingle;
 			this->Name = L"MyForm";
 			this->StartPosition = System::Windows::Forms::FormStartPosition::CenterScreen;
@@ -255,10 +240,14 @@ namespace XuLyAnh {
 				break;
 			}
 			case 6: {
-				vp->MaxMinFilter(path, times);
+				vp->MaxFilter(path, times);
 				break;
 			}
 			case 7: {
+				vp->MinFilter(path, times);
+				break;
+			}
+			case 8: {
 				vp->MedianFilter(path, times);
 				break;
 			}

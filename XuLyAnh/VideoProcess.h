@@ -22,7 +22,8 @@ namespace XuLyAnh {
 
 		void AlphaTrimmed(System::String ^path, int times);
 		void MidpointFilter(System::String ^path, int times);
-		void MaxMinFilter(System::String ^path, int times);
+		void MaxFilter(System::String ^path, int times);
+		void MinFilter(System::String ^path, int times);
 		void MedianFilter(System::String ^path, int times);
 
 		string toString(System::String ^ s);

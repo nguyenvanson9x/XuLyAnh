@@ -26,7 +26,8 @@ Class XuLyAnh.VideoProcess: AutoLayout, AnsiClass, Class, Public, BeforeFieldIni
     _ContraharmonicMean(Mat* IsImplicitlyDereferenced, Mat* IsImplicitlyDereferenced, Int32, Double): PrivateScope, Public, HideBySig
     AlphaTrimmed(String, Int32): PrivateScope, Public, HideBySig
     MidpointFilter(String, Int32): PrivateScope, Public, HideBySig
-    MaxMinFilter(String, Int32): PrivateScope, Public, HideBySig
+    MaxFilter(String, Int32): PrivateScope, Public, HideBySig
+    MinFilter(String, Int32): PrivateScope, Public, HideBySig
     MedianFilter(String, Int32): PrivateScope, Public, HideBySig
     toString(basic_string<char\,std::char_traits<char>\,std::allocator<char> >*, String): PrivateScope, Public, HideBySig
     toChar(String): PrivateScope, Public, HideBySig

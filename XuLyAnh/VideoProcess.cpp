@@ -253,7 +253,7 @@ void VideoProcess::MidpointFilter(System::String ^ path, int times)
 	cvDestroyWindow("Example2");
 }
 
-void XuLyAnh::VideoProcess::MaxMinFilter(System::String ^ path, int times)
+void XuLyAnh::VideoProcess::MaxFilter(System::String ^ path, int times)
 {
 	CvCapture* capture = cvCreateFileCapture(toChar(path));
 	IplImage* frame;
@@ -266,6 +266,26 @@ void XuLyAnh::VideoProcess::MaxMinFilter(System::String ^ path, int times)
 		for (i = 0; i < times; i++)
 			cvDilate(frame, dstMax, NULL, 1);
 		cvShowImage("Result_Max", dstMax);
+		char c = cvWaitKey(33);
+		if (c == 27) break;
+	}
+	cvReleaseCapture(&capture);
+	cvDestroyWindow("Example2");
+}
+
+void XuLyAnh::VideoProcess::MinFilter(System::String ^ path, int times)
+{
+	CvCapture* capture = cvCreateFileCapture(toChar(path));
+	IplImage* frame;
+	int i;
+	while (1) {
+		frame = cvQueryFrame(capture);
+		if (!frame) break;
+		cvShowImage("Original", frame);
+		IplImage *dstMin = cvCreateImage(cvSize(frame->width, frame->height), frame->depth, 3);
+		for (i = 0; i < times; i++)
+			cvErode(frame, dstMin, NULL, 1);
+		cvShowImage("Result_Min", dstMin);
 		char c = cvWaitKey(33);
 		if (c == 27) break;
 	}
