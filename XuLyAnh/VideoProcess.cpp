@@ -164,9 +164,9 @@ void VideoProcess::_ContraharmonicMean(const Mat &src, Mat &dst, int kernel, dou
 {
 	Mat temp;
 	copyMakeBorder(src, temp, floor(kernel / 2), floor(kernel / 2), floor(kernel / 2), floor(kernel / 2), BORDER_CONSTANT, Scalar(0, 0, 0));
-	for (int row = 1; row < temp.rows - kernel / 2 - 1; row++)
+	for (int row = kernel / 2; row < temp.rows - kernel / 2 - 1; row++)
 	{
-		for (int col = 1; col < temp.cols - kernel / 2 - 1; col++)
+		for (int col = kernel / 2; col < temp.cols - kernel / 2 - 1; col++)
 		{
 			double den = 0, num = 0;
 			for (int i = -(kernel / 2); i <= (kernel / 2); i++)
@@ -185,7 +185,7 @@ void VideoProcess::_ContraharmonicMean(const Mat &src, Mat &dst, int kernel, dou
 
 void VideoProcess::AlphaTrimmed(System::String ^ path, int times)
 {
-	int i;
+	int i, c;
 	VideoCapture cap(toString(path)); // open the video
 	if (cap.isOpened()) {  // check if we succeeded
 		Mat edges;
@@ -203,16 +203,19 @@ void VideoProcess::AlphaTrimmed(System::String ^ path, int times)
 			double *result = nullptr;
 
 			int alpha = 4;
-
-			for (i = 0; i < times; i++) {
-				// denoise image
-				//alphatrimmedmeanfilter(image, result, frame.cols, frame.rows, alpha);
-				Mat extend_frame;
-				copyMakeBorder(bgr[0], extend_frame, 1, 1, 1, 1, cv::BORDER_CONSTANT, Scalar(0));
-				double *extension = (double*)extend_frame.ptr<double>(0);
-				//alphatrimmed(frame, extend_frame, alpha);
-				alphatrimmedmeanfilter(image, extension, result, frame.cols, frame.rows, alpha);
+			// denoise each channel
+			for (c = 0; c < frame.channels(); c++) {
+				for (i = 0; i < times; i++) {
+					// denoise image
+					//alphatrimmedmeanfilter(image, result, frame.cols, frame.rows, alpha);
+					Mat extend_frame;
+					copyMakeBorder(bgr[0], extend_frame, 1, 1, 1, 1, cv::BORDER_CONSTANT, Scalar(0));
+					double *extension = (double*)extend_frame.ptr<double>(0);
+					//alphatrimmed(frame, extend_frame, alpha);
+					alphatrimmedmeanfilter(image, extension, result, frame.cols, frame.rows, alpha);
+				}
 			}
+
 			//imshow("Out", bgr[1]);
 			if (waitKey(30) >= 0) break;
 		}
